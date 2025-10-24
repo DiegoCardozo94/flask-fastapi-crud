@@ -16,7 +16,7 @@ fake_db = {
 
 # HELPER FUNCTIONS 
 def validate_user_data(data, require_id=True):
-    """Valida el JSON recibido para crear/actualizar usuarios."""
+    """Validate JSON data for create/update users."""
     if not data:
         abort(400, description="Missing JSON data")
 
