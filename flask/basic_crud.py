@@ -1,0 +1,29 @@
+from flask import Flask, jsonify, request
+
+app = Flask(__name__)
+
+# GET single user
+@app.route("/users/<user_id>", methods=["GET"])
+def get_user(user_id):
+    user = {"user_id": user_id, "name": "John Doe", "email": "j@j.com"}
+    return jsonify(user)
+
+# GET all users
+@app.route("/users/<user_id>", methods=["POST"])
+def create_user(user_id):
+    data = request.get_json()
+    return jsonify({"user_id": user_id, "data": data}), 201
+
+# UPDATE user
+@app.route("/users/<user_id>", methods=["PUT"])
+def update_user(user_id):
+    user = {"user_id": user_id, "name": "John Doe", "email": "j@j.com"}
+    return jsonify(user)
+
+# DELETE user
+@app.route("/users/<user_id>", methods=["DELETE"])
+def delete_user(user_id):
+    return jsonify({"message": "User deleted"}), 204
+
+if __name__ == "__main__":
+    app.run(debug=True)
