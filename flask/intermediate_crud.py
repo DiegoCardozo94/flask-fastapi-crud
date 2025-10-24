@@ -2,12 +2,12 @@ from flask import Flask, jsonify, request, abort
 
 app = Flask(__name__)
 
-# Simulamos una base de datos en memoria
 fake_db = {
     "1": {"user_id": "1", "name": "John Doe", "email": "j@j.com"},
     "2": {"user_id": "2", "name": "Jane Smith", "email": "jane@x.com"}
 }
 
+# GET single user
 @app.route("/users/<user_id>", methods=["GET"])
 def get_user(user_id):
     user = fake_db.get(user_id)
@@ -15,6 +15,7 @@ def get_user(user_id):
         abort(404, description="User not found")
     return jsonify(user), 200
 
+# CREATE user
 @app.route("/users", methods=["POST"])
 def create_user():
     data = request.get_json()
@@ -27,6 +28,7 @@ def create_user():
     fake_db[user_id] = data
     return jsonify({"message": "User created", "user": data}), 201
 
+# UPDATE user
 @app.route("/users/<user_id>", methods=["PUT"])
 def update_user(user_id):
     data = request.get_json()
@@ -38,6 +40,7 @@ def update_user(user_id):
     fake_db[user_id].update(data)
     return jsonify({"message": "User updated", "user": fake_db[user_id]}), 200
 
+# DELETE user
 @app.route("/users/<user_id>", methods=["DELETE"])
 def delete_user(user_id):
     if user_id not in fake_db:

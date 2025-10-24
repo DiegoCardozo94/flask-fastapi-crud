@@ -9,7 +9,6 @@ app = Flask(__name__)
 # PUT ----> curl -X PUT -H "Content-Type: application/json" -d '{"name": "John Doe", "email": "j@j.com"}' http://localhost:5000/users/1
 # DELETE ----> curl -X DELETE http://localhost:5000/users/1
 
-# Base de datos en memoria
 fake_db = {
     "1": {"user_id": "1", "name": "John Doe", "email": "j@j.com"},
     "2": {"user_id": "2", "name": "Jane Smith", "email": "jane@x.com"}
