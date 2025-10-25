@@ -18,9 +18,10 @@ def get_user(user_id):
 # CREATE user
 @app.route("/users", methods=["POST"])
 def create_user():
-    data = request.get_json()
+    data = request.get_json(silent=True)
     if not data or "user_id" not in data or "name" not in data or "email" not in data:
         abort(400, description="Missing required fields")
+
     user_id = data["user_id"]
     if user_id in fake_db:
         abort(400, description="User already exists")
@@ -31,9 +32,10 @@ def create_user():
 # UPDATE user
 @app.route("/users/<user_id>", methods=["PUT"])
 def update_user(user_id):
-    data = request.get_json()
+    data = request.get_json(silent=True)
     if not data:
         abort(400, description="Missing JSON data")
+
     if user_id not in fake_db:
         abort(404, description="User not found")
 
@@ -47,6 +49,19 @@ def delete_user(user_id):
         abort(404, description="User not found")
     del fake_db[user_id]
     return jsonify({"message": f"User {user_id} deleted"}), 200
+
+# Error handlers to return JSON for errors
+@app.errorhandler(400)
+def bad_request(error):
+    return jsonify({"error": "Bad Request", "message": error.description}), 400
+
+@app.errorhandler(404)
+def not_found(error):
+    return jsonify({"error": "Not Found", "message": error.description}), 404
+
+@app.errorhandler(500)
+def internal_error(error):
+    return jsonify({"error": "Internal Server Error"}), 500
 
 if __name__ == "__main__":
     app.run(debug=True)

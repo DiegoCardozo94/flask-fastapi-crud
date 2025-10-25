@@ -1,5 +1,7 @@
-from fastapi import FastAPI, HTTPException, Response, status, Request
+from fastapi import FastAPI
 from fastapi.responses import JSONResponse
+from fastapi import HTTPException, status, Response, Request
+
 from pydantic import BaseModel
 import uvicorn
 import logging
