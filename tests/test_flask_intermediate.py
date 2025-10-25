@@ -6,7 +6,6 @@ from flask_cruds.intermediate import app, fake_db
 def client() -> FlaskClient:
     app.config["TESTING"] = True
 
-    # Reiniciamos fake_db antes de cada test para evitar contaminación
     fake_db.clear()
     fake_db.update({
         "1": {"user_id": "1", "name": "John Doe", "email": "j@j.com"},

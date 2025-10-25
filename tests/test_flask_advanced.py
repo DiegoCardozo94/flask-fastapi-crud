@@ -4,10 +4,6 @@ from flask_cruds.advanced import app, fake_db
 
 @pytest.fixture()
 def client() -> FlaskClient:
-    """
-    Cliente de prueba para la app Flask Advanced CRUD.
-    Reinicia la fake_db antes de cada test.
-    """
     app.config["TESTING"] = True
 
     fake_db.clear()
@@ -123,8 +119,6 @@ def test_delete_user_not_found(client):
 
 # INTEGRATION FLOW (END-TO-END)
 def test_full_crud_flow(client):
-    """Crea, obtiene, actualiza y elimina un usuario en secuencia."""
-
     # CREATE
     new_user = {"user_id": "10", "name": "Flow User", "email": "flow@test.com"}
     resp_create = client.post("/users", json=new_user)
