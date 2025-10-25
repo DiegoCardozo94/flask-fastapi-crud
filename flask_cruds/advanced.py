@@ -58,8 +58,14 @@ def get_user(user_id):
 # CREATE user
 @app.route("/users", methods=["POST"])
 def create_user():
-    data = request.get_json()
-    validate_user_data(data, require_id=True)
+    data = request.get_json(silent=True)
+    if not data:
+        abort(400, description="Missing JSON data")
+
+    required_fields = ["user_id", "name", "email"]
+    for field in required_fields:
+        if field not in data:
+            abort(400, description=f"Missing field: {field}")
 
     user_id = data["user_id"]
     if user_id in fake_db:
@@ -68,14 +74,20 @@ def create_user():
     fake_db[user_id] = data
     return jsonify({"message": "User created", "user": data}), 201
 
-# UPDATE user (PUT)
+# UPDATE user
 @app.route("/users/<user_id>", methods=["PUT"])
 def update_user(user_id):
-    data = request.get_json()
-    validate_user_data(data, require_id=False)
+    data = request.get_json(silent=True)
+    if not data:
+        abort(400, description="Missing JSON data")
 
     if user_id not in fake_db:
         abort(404, description="User not found")
+
+    required_fields = ["name", "email"]
+    for field in required_fields:
+        if field not in data:
+            abort(400, description=f"Missing field: {field}")
 
     fake_db[user_id].update(data)
     return jsonify({"message": "User updated", "user": fake_db[user_id]}), 200
